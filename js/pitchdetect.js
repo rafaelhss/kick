@@ -82,7 +82,7 @@ function getUserMedia(dictionary, callback) {
         	navigator.mozGetUserMedia;
         navigator.getUserMedia(dictionary, callback, error);
     } catch (e) {
-        alert('getUserMedia threw exception :' + e);
+        alert("certifique-se de acessar https://" + '   getUserMedia threw exception :' + e);
     }
 }
 
