@@ -24,7 +24,7 @@
                 font-size: 500%;
             }
 
-            li {
+            .main li {
               display: inline-block;
               font-size: 1.5em;
               list-style-type: none;
@@ -32,7 +32,7 @@
               text-transform: uppercase;
             }
 
-            li span {
+            .main li span {
               display: block;
               font-size: 4.5rem;
             }
@@ -95,7 +95,7 @@
 
 		</style>
         <style>
-        #button {
+        .button {
           display: inline-block;
           padding: 15px 25px;
           font-size: 24px;
@@ -110,9 +110,9 @@
           box-shadow: 6px 6px #B89414;
         }
 
-        #button:hover {background-color: #8E7AE8}
+        .button:hover {background-color: #8E7AE8}
 
-        #button:active {
+        .button:active {
           background-color: #4524D6;
           box-shadow: 2px 2px #B89414;
           transform: translateY(4px);
@@ -123,19 +123,36 @@
             padding: 20px;    
         }
         #conf input{
-            width: 300px;        }
+            width: 300px;        
+        }
+        #help{
+            padding: 1%;
+            font-size: 120%;
+            background-color: #B89414;
+        }
         </style>
 	</head>
 	<body>
 		
      	<div class="container">
             
-            <div>
+            <div class="main">
             <div ng-app="myApp" ng-controller="myCtrl">    
                 <h1>Desfio dos mil chutes</h1> 
                 
+                <div id="help" ng-hide="hidehelp">
+                    <h1>Instrucoes</h1>
+                    <ul>
+                        <li>Certifique-se de estar usando HTTPS. Se nao tem certeza, clique <a href="https://milchutes.herokuapp.com">aqui</a></li>
+                        <li>Quando/Se solicitado, aceite o uso do microfone</li>
+                        <li>Posicione o aparelho o mais proximo do saco de pancadas possivel. A contagem sera feita pelo som do chute.</li>
+                    </ul>
+                    <button class="button" ng-click="hidehelp = true" >Entendi!</button>
+                </div>
+                
                 <div>
-                    <button id="button" ng-click="start()" >Iniciar</button>
+                    <button id="button" class="button" ng-click="start()" ng-show="hidehelp">Iniciar</button>
+                    <button class="button" ng-click="conf()" ng-show="hidehelp">Config</button>
                 </div> 
                 
                 <div class="conf" ng-show="showconf">
@@ -175,7 +192,7 @@
           $scope.start = function(){
               $scope.showconf = false;
               console.log("$scope.sensitivity: " + $scope.sensitivity)
-              toggleLiveInput((($scope.sensitivity) * 1.200) / 100, $scope.kicks);
+              toggleLiveInput((($scope.sensitivity) * 1.200) / 100, $scope.kicks*10);
           };
           $scope.conf = function(){
               $scope.showconf = !$scope.showconf;
