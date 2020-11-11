@@ -161,7 +161,10 @@
                     </p>
                     <p>
                         Meta chutes: {{kicks*10}}<input ng-model="kicks" onmouseup="stopLiveInput()" type="range" min="1" max="100" value="100">
-                    </p>    
+                    </p>   
+                    <p>
+                        Beep <input type="checkbox" ng-model="beep" value="true" selected> 
+                    </p>
                 </div>   
                 
             </div>
@@ -184,15 +187,28 @@
             </div>
 		
         </div>
+        
+        <audio id="myAudio">
+            <source src="beep.wav" type="audio/ogg">
+        </audio>
+       
          <script>
+             
+        function playAudio() { 
+          document.getElementById("myAudio").play(); 
+        } 
+
         var app = angular.module('myApp', []);
         app.controller('myCtrl', function($scope) {
           $scope.sensitivity = 84;    
-          $scope.kicks = 1000;    
+          $scope.kicks = 1000;   
+          $scope.beep = true;
           $scope.start = function(){
               $scope.showconf = false;
               console.log("$scope.sensitivity: " + $scope.sensitivity)
-              toggleLiveInput((($scope.sensitivity) * 1.200) / 100, $scope.kicks*10);
+              console.log("$scope.beep: " + $scope.beep)
+              
+              toggleLiveInput((($scope.sensitivity) * 1.200) / 100, $scope.kicks*10, $scope.beep);
           };
           $scope.conf = function(){
               $scope.showconf = !$scope.showconf;

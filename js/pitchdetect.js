@@ -19,6 +19,7 @@ var detectorElem,
 
 var sensitivity = 1.005;
 var maxkicks = 1000;
+var beep = true;
 
 window.onload = function() {
 	audioContext = new AudioContext();
@@ -115,9 +116,10 @@ function stopLiveInput(){
 }
 
 
-function toggleLiveInput(sens, max) {
+function toggleLiveInput(sens, max, b) {
     maxkicks = max;
     sensitivity = sens;
+    beep = b;
     console.log(" toggleLiveInput sensitivity: " + sensitivity)
     if (isPlaying) {
         stopLiveInput();        
@@ -214,6 +216,10 @@ function updatePitch() {
             var pcent = Math.round((countKick / maxkicks) * 100);
             document.getElementById("progressdone").style.width = pcent+"%";
             document.getElementById("progressdone").innerHTML = pcent + " %";
+            
+            if(beep) {
+                setTimeout(function(){document.getElementById("myAudio").play()}, 10)   
+            }
             
             if(countKick % 10 == 0){
                 var su = new SpeechSynthesisUtterance();
