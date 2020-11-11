@@ -8,6 +8,7 @@
 		<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
         
 		<link href='progresscss/style.css' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
        <style>
             @font-face{
              font-family:'digital-clock-font';
@@ -130,6 +131,9 @@
             font-size: 120%;
             background-color: #B89414;
         }
+        #share{
+            font-size: 500%;
+        }
         </style>
 	</head>
 	<body>
@@ -185,8 +189,17 @@
             <div>
                 <canvas id="waveform" width="512" height="256"></canvas>
             </div>
-		
+            <div id="share">
+                <a id="whatshref" href="whatsapp://send?text=Estou usando o contador de chutes para fazer o desafio dos mil chutes! tente voce tambem: https://milchutes.herokuapp.com" >
+                  <i class="fa fa-whatsapp"></i>
+                </a>
+                <a id="twitterhref" href="http://twitter.com/share?text=Estou usando o contador de chutes para fazer o desafio dos mil chutes! tente voce tambem: &url=https://milchutes.herokuapp.com" target="_blank">
+                  <i class="fa fa-twitter"></i>
+                </a>
+          </div>
         </div>
+        
+      
         
         <audio id="myAudio">
             <source src="beep.wav" type="audio/ogg">
@@ -241,6 +254,21 @@
                     document.getElementById('minutes').innerText = Math.floor((distance / (60)) % 60);//Math.floor((distance % (minute)) / second);
                     document.getElementById('seconds').innerText = Math.floor((distance) % 60); //Math.floor((distance % (hour)) / (minute)),    
                 }
+                
+                
+                
+                var sharetxt = "[MILCHUTES] Consegui " + document.getElementById("countKick").innerHTML + " chutes em ";
+                    if(Number(document.getElementById('hours').innerText) > 0){
+                        sharetxt += document.getElementById('hours').innerText + " horas, ";
+                    }
+                    if(Number(document.getElementById('minutes').innerText) > 0){
+                        sharetxt += document.getElementById('minutes').innerText + " minutos e ";
+                    }
+                    sharetxt += document.getElementById('seconds').innerText + " segundos." +
+                    " Tente voce tambem em: ";
+                
+                document.getElementById("twitterhref").href = "http://twitter.com/share?text=" + sharetxt + "&url=https://milchutes.herokuapp.com"
+                document.getElementById("whatshref").href = "whatsapp://send?text=" + sharetxt + "https://milchutes.herokuapp.com"
                 
                
             }, second)

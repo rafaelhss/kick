@@ -217,6 +217,7 @@ function updatePitch() {
             document.getElementById("progressdone").style.width = pcent+"%";
             document.getElementById("progressdone").innerHTML = pcent + " %";
             
+            
             if(beep) {
                 setTimeout(function(){document.getElementById("myAudio").play()}, 10)   
             }
