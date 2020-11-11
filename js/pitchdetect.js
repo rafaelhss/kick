@@ -17,6 +17,9 @@ var detectorElem,
 	detuneElem,
 	detuneAmount;
 
+var sensitivity = 1.005;
+var maxkicks = 1000;
+
 window.onload = function() {
 	audioContext = new AudioContext();
 	MAX_SIZE = Math.max(4,Math.floor(audioContext.sampleRate/5000));	// corresponds to a 5kHz signal
@@ -98,10 +101,8 @@ function gotStream(stream) {
 }
 
 
-
-function toggleLiveInput() {
-    if (isPlaying) {
-        //stop playing and return
+function stopLiveInput(){
+    //stop playing and return
         sourceNode.stop( 0 );
         sourceNode = null;
         analyser = null;
@@ -111,7 +112,15 @@ function toggleLiveInput() {
         window.cancelAnimationFrame( rafID );
         
         document.getElementById("button").innerHTML = "Retomar";
-        
+}
+
+
+function toggleLiveInput(sens, max) {
+    maxkicks = max;
+    sensitivity = sens;
+    console.log(" toggleLiveInput sensitivity: " + sensitivity)
+    if (isPlaying) {
+        stopLiveInput();        
     } else {
         document.getElementById("button").innerHTML= "Pausar"
 
@@ -183,13 +192,14 @@ function draw(){
 	}
 }
 
-function updatePitch( time ) {
+function updatePitch() {
 	analyser.getFloatTimeDomainData( buf );
 	draw();
     var countBuffkick = 0;
     
     for (var i=1;i<512;i++) {
-        if(buf[i] > 1.005){
+        //if(buf[i] > 1.005){
+        if(buf[i] > sensitivity){
             countBuffkick +=1;
         }
     }
@@ -199,8 +209,9 @@ function updatePitch( time ) {
         if(countNonZeros == 0 && countZeros == 20){ //contar chute
             countKick++;
             console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@countKick: " + countKick)
+            console.log("sensitivity: " + sensitivity)
             document.getElementById("countKick").innerHTML = countKick;
-            var pcent = Math.round((countKick / 1000) * 100);
+            var pcent = Math.round((countKick / maxkicks) * 100);
             document.getElementById("progressdone").style.width = pcent+"%";
             document.getElementById("progressdone").innerHTML = pcent + " %";
             
@@ -217,7 +228,7 @@ function updatePitch( time ) {
         countZeros = 0;
         countNonZeros++; 
     }
-     console.log("countBuffkick: " + countBuffkick + "   countNonZeros: " + countNonZeros + "   countZeros:" + countZeros + "countKick: " + countKick);
+     //console.log("countBuffkick: " + countBuffkick + "   countNonZeros: " + countNonZeros + "   countZeros:" + countZeros + "countKick: " + countKick);
 
     
 

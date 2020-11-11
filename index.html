@@ -2,6 +2,9 @@
 <html>
 	<head>
 		<title>Desafio dos chutes</title>
+        <script src="js/pitchdetect.js"></script>
+		
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 		<link href='http://fonts.googleapis.com/css?family=Alike' rel='stylesheet' type='text/css'>
         
 		<link href='progresscss/style.css' rel='stylesheet' type='text/css'>
@@ -114,17 +117,37 @@
           box-shadow: 2px 2px #B89414;
           transform: translateY(4px);
         }
+            
+        .conf{
+            font-size: 300%;
+            padding: 20px;    
+        }
+        #conf input{
+            width: 300px;        }
         </style>
 	</head>
 	<body>
-		<script src="js/pitchdetect.js"></script>
 		
      	<div class="container">
+            
             <div>
-                <button id="button" onclick="toggleLiveInput()">Iniciar</button>
+            <div ng-app="myApp" ng-controller="myCtrl">    
+                <h1>Desfio dos mil chutes</h1> 
+                
+                <div>
+                    <button id="button" ng-click="start()" >Iniciar</button>
+                </div> 
+                
+                <div class="conf" ng-show="showconf">
+                    <p>
+                        Sensibilidade: <input onmouseup="stopLiveInput()" ng-model="sensitivity" type="range" min="0" max="100" value="50">
+                    </p>
+                    <p>
+                        Meta chutes: {{kicks*10}}<input ng-model="kicks" onmouseup="stopLiveInput()" type="range" min="1" max="100" value="100">
+                    </p>    
+                </div>   
+                
             </div>
-            <div>
-              <h1>Desfio dos mil chutes </h1>
               <ul>
                 <!--<li><span id="days"></span>days</li>-->
                 <li><span id="hours"></span>Horas</li>
@@ -144,7 +167,25 @@
             </div>
 		
         </div>
- 
+         <script>
+        var app = angular.module('myApp', []);
+        app.controller('myCtrl', function($scope) {
+          $scope.sensitivity = 84;    
+          $scope.kicks = 1000;    
+          $scope.start = function(){
+              $scope.showconf = false;
+              console.log("$scope.sensitivity: " + $scope.sensitivity)
+              toggleLiveInput((($scope.sensitivity) * 1.200) / 100, $scope.kicks);
+          };
+          $scope.conf = function(){
+              $scope.showconf = !$scope.showconf;
+              stopLiveInput();
+          };
+          
+            
+          $scope.lastName = "Doe";
+        });
+        </script>
        
         <script>
             const second = 1000,
